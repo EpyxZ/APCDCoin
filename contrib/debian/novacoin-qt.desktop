@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=APCDCoin
+Comment=APCDCoin P2P Cryptocurrency
+Comment[fr]=APCDCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=APCDCoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/APCDCoin-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/bitcoin80.xpm
+MimeType=x-scheme-handler/APCDCoin;
+Categories=Office;

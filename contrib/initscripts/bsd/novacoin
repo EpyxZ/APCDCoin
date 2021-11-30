@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# PROVIDE: APCDCoin
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# APCDCoin_enable (bool): Set to NO by default. Set this variable to YES if you want to enable APCDCoin service.
+# APCDCoin_config (path): Set to /usr/local/etc/APCDCoin.conf by default.
+# APCDCoin_user:  The user account APCDCoin daemon runs as. It uses 'root' user by default.
+# APCDCoin_group: The group account APCDCoin daemon runs as. It uses 'wheel' group by default.
+# APCDCoin_datadir (str): Default to "/var/db/APCDCoin". Base data directory.
+
+. /etc/rc.subr
+
+name=APCDCoin
+rcvar=APCDCoin_enable
+
+: ${APCDCoin_enable:=NO}
+: ${APCDCoin_config=/usr/local/etc/APCDCoin.conf}
+: ${APCDCoin_datadir=/var/db/APCDCoin}
+: ${APCDCoin_user="root"}
+: ${APCDCoin_group="wheel"}
+
+required_files=${APCDCoin_config}
+command=/usr/local/bin/APCDCoind
+APCDCoin_chdir=${APCDCoin_datadir}
+pidfile="${APCDCoin_datadir}/APCDCoind.pid"
+stop_cmd=APCDCoin_stop
+command_args="-conf=${APCDCoin_config} -datadir=${APCDCoin_datadir} -noupnp -daemon -pid=${pidfile}"
+start_precmd="${name}_prestart"
+
+APCDCoin_create_datadir()
+{
+	echo "Creating data directory"
+	eval mkdir -p ${APCDCoin_datadir}
+	[ $? -eq 0 ] && chown -R ${APCDCoin_user}:${APCDCoin_group} ${APCDCoin_datadir}
+}
+
+APCDCoin_prestart()
+{
+	if [ ! -d "${APCDCoin_datadir}/." ]; then
+		APCDCoin_create_datadir || return 1
+	fi
+}
+
+APCDCoin_requirepidfile()
+{
+	if [ ! "0`check_pidfile ${pidfile} ${command}`" -gt 1 ]; then
+		echo "${name} not running? (check $pidfile)."
+		exit 1
+	fi
+}
+
+APCDCoin_stop()
+{
+    APCDCoin_requirepidfile
+
+	echo "Stopping ${name}."
+	eval ${command} -conf=${APCDCoin_config} -datadir=${APCDCoin_datadir} stop
+	wait_for_pids ${rc_pid}
+}
+
+load_rc_config $name
+run_rc_command "$1"

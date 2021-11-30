@@ -1,0 +1,5 @@
+APCDCoin-qt usr/bin
+share/pixmaps/bitcoin32.xpm usr/share/pixmaps
+share/pixmaps/bitcoin80.xpm usr/share/pixmaps
+debian/APCDCoin-qt.desktop usr/share/applications
+debian/APCDCoin-qt.protocol usr/share/kde4/services/

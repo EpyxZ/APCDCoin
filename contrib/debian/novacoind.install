@@ -1,0 +1,2 @@
+debian/bin/APCDCoind usr/bin
+src/APCDCoind usr/lib/APCDCoin

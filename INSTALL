@@ -1,0 +1,9 @@
+Building APCDCoin
+
+See doc/readme-qt.rst for instructions on building APCDCoin Qt,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of APCDCoin.
+
+See doc/build-*.txt for instructions on building APCDCoind,
+the intended-for-services, no-graphical-interface, reference
+implementation of APCDCoin.
